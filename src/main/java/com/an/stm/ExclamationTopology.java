@@ -20,7 +20,9 @@ import backtype.storm.utils.Utils;
  * This is a basic example of a Storm topology.
  */
 public class ExclamationTopology {
+
     public static class ExclamationBolt extends BaseRichBolt {
+        private static final long serialVersionUID = -5740869690214932878L;
         OutputCollector _collector;
 
         @Override
@@ -38,7 +40,6 @@ public class ExclamationTopology {
         public void declareOutputFields(OutputFieldsDeclarer declarer) {
             declarer.declare(new Fields("word"));
         }
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -53,8 +54,10 @@ public class ExclamationTopology {
 
         if (args != null && args.length > 0) {
             conf.setNumWorkers(3);
-            StormSubmitter.submitTopologyWithProgressBar(args[0], conf, builder.createTopology());
+
+            StormSubmitter.submitTopology(args[0], conf, builder.createTopology());
         } else {
+
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology("test", conf, builder.createTopology());
             Utils.sleep(10000);
